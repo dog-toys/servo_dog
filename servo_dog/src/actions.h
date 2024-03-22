@@ -81,6 +81,14 @@ void s4_5() {
   s4.write(0);
 }
 
+void servoAttach()
+{
+    s1.attach(18);
+    s2.attach(17);
+    s3.attach(26);
+    s4.attach(27);
+}
+
 void forward() {
     s1_up();
     s4_up();
