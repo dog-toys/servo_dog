@@ -1,76 +1,14 @@
 #include <Arduino.h>
-#include <WiFi.h>
-#include <PubSubClient.h>
+
 #include "actions.h"
+#include "mqtt.h"
 
-// 网络配置
-const char* ssid = "Lemon-Dev";
-const char* password = "lagrengedev";
+#include <ArduinoBLE.h>
 
-// MQTT服务器配置
-const char* mqtt_server = "10.25.5.110";
-const int mqtt_port = 1883; // 通常是1883端口，但你的服务器配置可能不同
-WiFiClient espClient;
-PubSubClient client(espClient);
-
-void setup_wifi() {
-  delay(10);
-  // 连接WiFi网络
-  Serial.println("Connecting to WiFi...");
-  WiFi.begin(ssid, password);
-
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-
-  Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-}
-
-void callback(char* topic, byte* payload, unsigned int length) {
-  Serial.print("Message arrived [");
-  Serial.print(topic);
-  String message;
-  for (int i = 0; i < length; i++) {
-    message += (char)payload[i];
-  }
-  Serial.println(message);
-  if (String(topic) == "dog_in_actions") {
-    if (message == "forward") {
-        forward();
-    } else if (message == "back") {
-    } else if (message == "turn_left") {
-
-    } else if (message == "turn_right") {
-
-    } else if (message == "stop") {
-        down();
-    }
-  }
-}
-
-void reconnect() {
-  // 循环直到连接成功
-  while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
-    // 尝试连接
-    if (client.connect("dog1", "siria", "z13547842355")) {
-      Serial.println("connected");
-      // 一旦连接，发布一个公告...
-      client.publish("outTopic", "hello world");
-      // ...并重新订阅
-      client.subscribe("dog_in_actions");
-    } else {
-      Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // 等待5秒后重试
-      delay(5000);
-    }
-  }
-}
+BLEService myService("fff0");
+BLEIntCharacteristic myCharacteristic("fff1", BLERead | BLEBroadcast);
+// Advertising parameters should have a global scope. Do NOT define them in 'setup' or in 'loop'
+const uint8_t completeRawAdvertisingData[] = {0x02,0x01,0x06,0x09,0xff,0x01,0x01,0x00,0x01,0x02,0x03,0x04,0x05};
 
 void setup() {
     Serial.begin(115200);
@@ -81,15 +19,48 @@ void setup() {
 
     down();
 
-    setup_wifi();
-    client.setServer(mqtt_server, mqtt_port);
-    client.setCallback(callback);
+    // MQTT SETUP
+    // setup_wifi();
+    // client.setServer(mqtt_server, mqtt_port);
+    // client.setCallback(callback);
+
+
+    // BLE 
+    if (!BLE.begin()) {
+        Serial.println("failed to initialize BLE!");
+        while (1);
+    }
+
+    myService.addCharacteristic(myCharacteristic);
+    BLE.addService(myService);
+
+    // Build advertising data packet
+    BLEAdvertisingData advData;
+    // If a packet has a raw data parameter, then all the other parameters of the packet will be ignored
+    advData.setRawData(completeRawAdvertisingData, sizeof(completeRawAdvertisingData));  
+    // Copy set parameters in the actual advertising packet
+    BLE.setAdvertisingData(advData);
+
+    // Build scan response data packet
+    BLEAdvertisingData scanData;
+    scanData.setLocalName("Test advertising raw data");
+    // Copy set parameters in the actual scan response packet
+    BLE.setScanResponseData(scanData);
+    
+    BLE.advertise();
+
+    Serial.println("advertising ...");
 }
 
+
 void loop() {
-  if (!client.connected()) {
-    reconnect();
-  }
-  client.loop();
+    // MQTT LOOP
+    // if (!client.connected()) {
+    //     reconnect();
+    // }
+    // client.loop();
+
+
+    BLE.poll();
 }
 
