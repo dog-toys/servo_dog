@@ -26,18 +26,8 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
-
-void setup() {
-    Serial.begin(115200);
-    servoAttach();
-    down();
-
-    // MQTT SETUP
-    // setup_wifi();
-    // client.setServer(mqtt_server, mqtt_port);
-    // client.setCallback(callback);
-
-    // BLE
+void BLEInit()
+{
     BLEDevice::init("Fish Fish");
     auto local_address = BLEDevice::getAddress();
     Serial.println(local_address.toString().c_str());
@@ -60,6 +50,24 @@ void setup() {
     Serial.println("BLE Advertising first start");
 }
 
+unsigned long lastMillis = 0;
+
+void setup() {
+    lastMillis = millis();
+    Serial.begin(115200);
+    servoAttach();
+    stand_up();
+
+    // MQTT SETUP
+    // setup_wifi();
+    // client.setServer(mqtt_server, mqtt_port);
+    // client.setCallback(callback);
+
+    // BLE
+    // BLEInit();
+}
+
+
 
 void loop() {
     // MQTT LOOP
@@ -69,13 +77,33 @@ void loop() {
     // client.loop();
 
     // BLE LOOP
-    if (BLEDevice::getInitialized() && !isAdvertising && clientCount == 0) {
-        delay(500);
-        BLEDevice::startAdvertising();
-        isAdvertising = true;
-        Serial.println("BLE Advertising start again");
-    }
-    delay(100);
+    // if (BLEDevice::getInitialized() && !isAdvertising && clientCount == 0) {
+    //     delay(500);
+    //     BLEDevice::startAdvertising();
+    //     isAdvertising = true;
+    //     Serial.println("BLE Advertising start again");
+    // }
+    // delay(100);
+
+    dance2();
+
+    // if (millis() - lastMillis <= 3000) {
+    //     forward();
+    // } else if (millis() - lastMillis <= 6000) {
+    //     back();
+    // } else if (millis() - lastMillis <= 9000) {
+    //     sit_down();
+    // } else if (millis() - lastMillis <= 12000) {
+    //     stand_up();
+    // } else if (millis() - lastMillis <= 15000) {
+    //     left_front_hand_up();
+    // } else if (millis() - lastMillis <= 18000) {
+    //     stand_up();
+    //     right_front_hand_up();
+    // } else if (millis() - lastMillis <= 21000) {
+    //     stand_up();
+    // } else if (millis() - lastMillis <= 40000) {
+    // }
 
 }
 
