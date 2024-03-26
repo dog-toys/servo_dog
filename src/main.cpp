@@ -26,12 +26,74 @@ class MyServerCallbacks: public BLEServerCallbacks {
     }
 };
 
+class MySecurity: public BLESecurityCallbacks {
+    // 显示本机要求的静态码
+    void onPassKeyNotify(uint32_t pass_key) {
+        Serial.println("The passkey Notify number: " + String(pass_key));
+    }
+
+    // 认证结果
+    void onAuthenticationComplete(esp_ble_auth_cmpl_t auth_cmpl) {
+        if (!auth_cmpl.success) {
+            Serial.println("Authentication failed!");
+        } else {
+            Serial.println("Authentication success!");
+        }
+    }
+
+    // 显示动态码并确定是否同意配对
+    bool onConfirmPIN(uint32_t pin) {
+        Serial.println("onConfirm: " + String(pin));
+        return true;
+    }
+
+    uint32_t onPassKeyRequest() {
+        Serial.println("The passkey Request");
+        return 0;
+    }
+
+    bool onSecurityRequest() {
+        return true;
+    }
+
+};
+
+class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
+    void onWrite(BLECharacteristic *pCharacteristic) {
+        std::string value = pCharacteristic->getValue();
+        if (value.length() > 0) {
+            Serial.println("Received value: " + String(value.c_str()));
+            if (value == "forward") {
+                forward();
+            } else if (value == "backward") {
+                backward();
+            // } else if (value == "left") {
+            //     left();
+            // } else if (value == "right") {
+            //     right();
+            } else if (value == "stand_up") {
+                stand_up();
+            } else if (value == "sit_down") {
+                sit_down();
+            }
+        }
+    }
+};
+
 void BLEInit()
 {
     BLEDevice::init("Fish Fish");
     auto local_address = BLEDevice::getAddress();
     Serial.println(local_address.toString().c_str());
 
+    // set security， 使用静态密码认证
+    // BLEDevice::setEncryptionLevel(ESP_BLE_SEC_ENCRYPT_MITM);
+    // BLEDevice::setSecurityCallbacks(new MySecurity());
+    // BLESecurity *pSecurity = new BLESecurity();
+    // pSecurity->setStaticPIN(252525);
+
+
+    // Create server and service
     BLEServer *pServer = BLEDevice::createServer();
     BLEService *pService = pServer->createService(SERVICE_UUID);
     BLECharacteristic *pCharateristic = pService->createCharacteristic(
@@ -39,6 +101,8 @@ void BLEInit()
         BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_WRITE
     );
     pCharateristic->setValue("Hello World");
+    pCharateristic->setCallbacks(new MyCharacteristicCallbacks());
+
     pServer->setCallbacks(new MyServerCallbacks());
     pService->start();
 
@@ -64,7 +128,7 @@ void setup() {
     // client.setCallback(callback);
 
     // BLE
-    // BLEInit();
+    BLEInit();
 }
 
 
@@ -77,20 +141,20 @@ void loop() {
     // client.loop();
 
     // BLE LOOP
-    // if (BLEDevice::getInitialized() && !isAdvertising && clientCount == 0) {
-    //     delay(500);
-    //     BLEDevice::startAdvertising();
-    //     isAdvertising = true;
-    //     Serial.println("BLE Advertising start again");
-    // }
-    // delay(100);
+    if (BLEDevice::getInitialized() && !isAdvertising && clientCount == 0) {
+        delay(500);
+        BLEDevice::startAdvertising();
+        isAdvertising = true;
+        Serial.println("BLE Advertising start again");
+    }
+    delay(100);
 
-    dance2();
+    // dance2();
 
     // if (millis() - lastMillis <= 3000) {
     //     forward();
     // } else if (millis() - lastMillis <= 6000) {
-    //     back();
+    //     backward();
     // } else if (millis() - lastMillis <= 9000) {
     //     sit_down();
     // } else if (millis() - lastMillis <= 12000) {

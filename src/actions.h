@@ -138,7 +138,7 @@ void forward() {
     delay(STOP_GAP);
 }
 
-void back() {
+void backward() {
     s1_back();
     s4_back();
     delay(STOP_GAP);
