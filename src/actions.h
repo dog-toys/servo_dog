@@ -1,3 +1,6 @@
+#ifndef ACTIONS_H
+#define ACTIONS_H
+
 #include <ESP32Servo.h>
 Servo s1, s2, s3, s4;
 
@@ -241,3 +244,5 @@ void dance2()
   delay(STOP_GAP * 5);
 
 }
+
+#endif

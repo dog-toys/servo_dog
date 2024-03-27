@@ -1,5 +1,10 @@
+#ifndef MQTT_H
+#define MQTT_H
+
 #include <WiFi.h>
 #include <PubSubClient.h>
+
+#include "actions.h"
 
 // 网络配置
 const char* ssid = "Lemon-Dev";
@@ -69,3 +74,5 @@ void reconnect() {
         }
     }
 }
+
+#endif
