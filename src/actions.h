@@ -2,6 +2,7 @@
 #define ACTIONS_H
 
 #include <ESP32Servo.h>
+#include <Wire.h>
 Servo s1, s2, s3, s4;
 
 //   servo number sequence:
@@ -105,7 +106,7 @@ void s4_5() {
   s4.write(0);
 }
 
-void servoAttach()
+void initServo()
 {
     s1.attach(18);
     s2.attach(17);
