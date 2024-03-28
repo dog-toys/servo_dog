@@ -70,11 +70,11 @@ void s2_5() {
 }
 
 void s3_1() {
-  pwm_servo_set(2, 0);
+  pwm_servo_set(2, 180);
 }
 
 void s3_up() {
-  pwm_servo_set(2, 45);
+  pwm_servo_set(2, 135);
 }
 
 void s3_down() {
@@ -82,19 +82,19 @@ void s3_down() {
 }
 
 void s3_back() {
-  pwm_servo_set(2, 135);
+  pwm_servo_set(2, 45);
 }
 
 void s3_5() {
-  pwm_servo_set(2, 180);
+  pwm_servo_set(2, 0);
 }
 
 void s4_1() {
-  pwm_servo_set(3, 180);
+  pwm_servo_set(3, 0);
 }
 
 void s4_up() {
-  pwm_servo_set(3, 135);
+  pwm_servo_set(3, 45);
 }
 
 void s4_down() {
@@ -102,11 +102,11 @@ void s4_down() {
 }
 
 void s4_back() {
-  pwm_servo_set(3, 45);
+  pwm_servo_set(3, 135);
 }
 
 void s4_5() {
-  pwm_servo_set(3, 0);
+  pwm_servo_set(3, 180);
 }
 
 // void initServo()
@@ -119,57 +119,57 @@ void s4_5() {
 
 void forward() {
     s1_up();
-    s4_up();
+    s3_up();
     delay(STOP_GAP);
     s2_back();
-    s3_back();
+    s4_back();
     delay(STOP_GAP);
     s1_down();
-    s4_down();
+    s3_down();
     delay(STOP_GAP);
     s2_down();
-    s3_down();
+    s4_down();
     delay(STOP_GAP);
 
     s2_up();
-    s3_up();
+    s4_up();
     delay(STOP_GAP);
     s1_back();
-    s4_back();
+    s3_back();
     delay(STOP_GAP);
     s2_down();
-    s3_down();
+    s4_down();
     delay(STOP_GAP);
     s1_down();
-    s4_down();
+    s3_down();
     delay(STOP_GAP);
 }
 
 void backward() {
     s1_back();
-    s4_back();
+    s3_back();
     delay(STOP_GAP);
     s2_up();
-    s3_up();
+    s4_up();
     delay(STOP_GAP);
     s1_down();
-    s4_down();
+    s3_down();
     delay(STOP_GAP);
     s2_down();
-    s3_down();
+    s4_down();
     delay(STOP_GAP);
 
     s2_back();
-    s3_back();
+    s4_back();
     delay(STOP_GAP);
     s1_up();
-    s4_up();
+    s3_up();
     delay(STOP_GAP);
     s2_down();
-    s3_down();
+    s4_down();
     delay(STOP_GAP);
     s1_down();
-    s4_down();
+    s3_down();
     delay(STOP_GAP);
 
 }
