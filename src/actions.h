@@ -3,9 +3,12 @@
 
 #include <ESP32Servo.h>
 #include <Wire.h>
+
+#include "pwm_servo.h"
+
 Servo s1, s2, s3, s4;
 
-//   servo number sequence:
+//   servo number sequence:  in pwm_servo.h, servo starts from 0
 //   1 servo         2 servo
 //   3 servo         4 servo
 
@@ -27,92 +30,92 @@ Servo s1, s2, s3, s4;
 #define STOP_GAP 50
 
 void s1_1() {
-  s1.write(0);
+  pwm_servo_set(0, 0);
 }
 
 void s1_up() {
-  s1.write(45);
+  pwm_servo_set(0, 45);
 }
 
 void s1_down() {
-  s1.write(90);
+  pwm_servo_set(0, 90);
 }
 
 void s1_back() {
-  s1.write(135);
+  pwm_servo_set(0, 145);
 }
 
 void s1_5() {
-  s1.write(180);
+  pwm_servo_set(0, 180);
 }
 
 void s2_1() {
-  s2.write(180);
+  pwm_servo_set(1, 180);
 }
 
 void s2_up() {
-  s2.write(135);
+  pwm_servo_set(1, 135);
 }
 
 void s2_down() {
-  s2.write(90);
+  pwm_servo_set(1, 90);
 }
 
 void s2_back() {
-  s2.write(45);
+  pwm_servo_set(1, 45);
 }
 
 void s2_5() {
-  s2.write(0);
+  pwm_servo_set(1, 0);
 }
 
 void s3_1() {
-  s3.write(0);
+  pwm_servo_set(2, 0);
 }
 
 void s3_up() {
-  s3.write(45);
+  pwm_servo_set(2, 45);
 }
 
 void s3_down() {
-  s3.write(90);
+  pwm_servo_set(2, 90);
 }
 
 void s3_back() {
-  s3.write(135);
+  pwm_servo_set(2, 135);
 }
 
 void s3_5() {
-  s3.write(180);
+  pwm_servo_set(2, 180);
 }
 
 void s4_1() {
-  s4.write(180);
+  pwm_servo_set(3, 180);
 }
 
 void s4_up() {
-  s4.write(135);
+  pwm_servo_set(3, 135);
 }
 
 void s4_down() {
-  s4.write(90);
+  pwm_servo_set(3, 90);
 }
 
 void s4_back() {
-  s4.write(45);
+  pwm_servo_set(3, 45);
 }
 
 void s4_5() {
-  s4.write(0);
+  pwm_servo_set(3, 0);
 }
 
-void initServo()
-{
-    s1.attach(18);
-    s2.attach(17);
-    s3.attach(26);
-    s4.attach(27);
-}
+// void initServo()
+// {
+//     s1.attach(18);
+//     s2.attach(17);
+//     s3.attach(26);
+//     s4.attach(27);
+// }
 
 void forward() {
     s1_up();
