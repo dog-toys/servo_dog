@@ -70,8 +70,8 @@ class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
                 backward();
             // } else if (value == "left") {
             //     left();
-            // } else if (value == "right") {
-            //     right();
+            } else if (value == "turn_right") {
+                turn_right();
             } else if (value == "stand_up") {
                 stand_up();
             } else if (value == "sit_down") {

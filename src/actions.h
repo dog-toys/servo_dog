@@ -1,16 +1,13 @@
 #ifndef ACTIONS_H
 #define ACTIONS_H
 
-#include <ESP32Servo.h>
 #include <Wire.h>
 
 #include "pwm_servo.h"
 
-Servo s1, s2, s3, s4;
-
 //   servo number sequence:  in pwm_servo.h, servo starts from 0
-//   1 servo         2 servo
-//   3 servo         4 servo
+//   FL(1) servo          FR(2) servo
+//   BL(4) servo          BR(3) servo
 
 //   angle:
 //   ------------------------> this is forward
@@ -27,224 +24,238 @@ Servo s1, s2, s3, s4;
 // 2 is called "up" in code
 // 4 is called "back" in code
 
-#define STOP_GAP 50
+#define STOP_GAP 100
 
-void s1_1() {
+void FL_1() {
   pwm_servo_set(0, 0);
 }
 
-void s1_up() {
+void FL_up() {
   pwm_servo_set(0, 45);
 }
 
-void s1_down() {
+void FL_down() {
   pwm_servo_set(0, 90);
 }
 
-void s1_back() {
+void FL_back() {
   pwm_servo_set(0, 145);
 }
 
-void s1_5() {
+void FL_5() {
   pwm_servo_set(0, 180);
 }
 
-void s2_1() {
+void FR_1() {
   pwm_servo_set(1, 180);
 }
 
-void s2_up() {
+void FR_up() {
   pwm_servo_set(1, 135);
 }
 
-void s2_down() {
+void FR_down() {
   pwm_servo_set(1, 90);
 }
 
-void s2_back() {
+void FR_back() {
   pwm_servo_set(1, 45);
 }
 
-void s2_5() {
+void FR_5() {
   pwm_servo_set(1, 0);
 }
 
-void s3_1() {
+void BR_1() {
   pwm_servo_set(2, 180);
 }
 
-void s3_up() {
+void BR_up() {
   pwm_servo_set(2, 135);
 }
 
-void s3_down() {
+void BR_down() {
   pwm_servo_set(2, 90);
 }
 
-void s3_back() {
+void BR_back() {
   pwm_servo_set(2, 45);
 }
 
-void s3_5() {
+void BR_5() {
   pwm_servo_set(2, 0);
 }
 
-void s4_1() {
+void BL_1() {
   pwm_servo_set(3, 0);
 }
 
-void s4_up() {
+void BL_up() {
   pwm_servo_set(3, 45);
 }
 
-void s4_down() {
+void BL_down() {
   pwm_servo_set(3, 90);
 }
 
-void s4_back() {
+void BL_back() {
   pwm_servo_set(3, 135);
 }
 
-void s4_5() {
+void BL_5() {
   pwm_servo_set(3, 180);
 }
 
 // void initServo()
 // {
-//     s1.attach(18);
-//     s2.attach(17);
-//     s3.attach(26);
-//     s4.attach(27);
+//     FL.attach(18);
+//     FR.attach(17);
+//     BL.attach(26);
+//     BR.attach(27);
 // }
 
 void forward() {
-    s1_up();
-    s3_up();
+    FL_up();
+    BR_up();
     delay(STOP_GAP);
-    s2_back();
-    s4_back();
+    FR_back();
+    BL_back();
     delay(STOP_GAP);
-    s1_down();
-    s3_down();
+    FL_down();
+    BR_down();
     delay(STOP_GAP);
-    s2_down();
-    s4_down();
+    FR_down();
+    BL_down();
     delay(STOP_GAP);
 
-    s2_up();
-    s4_up();
+    FR_up();
+    BL_up();
     delay(STOP_GAP);
-    s1_back();
-    s3_back();
+    FL_back();
+    BR_back();
     delay(STOP_GAP);
-    s2_down();
-    s4_down();
+    FR_down();
+    BL_down();
     delay(STOP_GAP);
-    s1_down();
-    s3_down();
+    FL_down();
+    BR_down();
     delay(STOP_GAP);
 }
 
 void backward() {
-    s1_back();
-    s3_back();
+    FL_back();
+    BR_back();
     delay(STOP_GAP);
-    s2_up();
-    s4_up();
+    FR_up();
+    BL_up();
     delay(STOP_GAP);
-    s1_down();
-    s3_down();
+    FL_down();
+    BR_down();
     delay(STOP_GAP);
-    s2_down();
-    s4_down();
-    delay(STOP_GAP);
-
-    s2_back();
-    s4_back();
-    delay(STOP_GAP);
-    s1_up();
-    s3_up();
-    delay(STOP_GAP);
-    s2_down();
-    s4_down();
-    delay(STOP_GAP);
-    s1_down();
-    s3_down();
+    FR_down();
+    BL_down();
     delay(STOP_GAP);
 
+    FR_back();
+    BL_back();
+    delay(STOP_GAP);
+    FL_up();
+    BR_up();
+    delay(STOP_GAP);
+    FR_down();
+    BL_down();
+    delay(STOP_GAP);
+    FL_down();
+    BR_down();
+    delay(STOP_GAP);
+}
+
+void turn_right() {
+    FL_up();
+    BR_up();
+    delay(STOP_GAP);
+    FR_back();
+    BL_back();
+    delay(STOP_GAP);
+    FL_down();
+    BR_down();
+    delay(STOP_GAP);
+    FR_down();
+    BL_down();
+    delay(STOP_GAP);
 }
 
 void stand_up() {
-    s1_down();
-    s2_down();
-    s3_down();
-    s4_down();
+    FL_down();
+    FR_down();
+    BL_down();
+    BR_down();
 }
 
 void sit_down() {
-    s1_1();
-    s2_1();
-    s3_5();
-    s4_5();
+    FL_1();
+    FR_1();
+    BL_5();
+    BR_5();
 }
 
 void left_front_hand_up() {
-    s1_1();
+    FL_1();
 }
 
 void right_front_hand_up() {
-    s2_1();
+    FR_1();
 }
 
 void dance() {
-  s1_up();
-  s2_up();
-  s3_up();
-  s4_up();
+  FL_up();
+  FR_up();
+  BL_up();
+  BR_up();
   delay(STOP_GAP * 3);
-  s1_down();
-  s2_down();
-  s3_down();
-  s4_down();
+  FL_down();
+  FR_down();
+  BL_down();
+  BR_down();
   delay(STOP_GAP * 3);
-  s1_back();
-  s2_back();
-  s3_back();
-  s4_back();
+  FL_back();
+  FR_back();
+  BL_back();
+  BR_back();
   delay(STOP_GAP * 3);
-  s1_down();
-  s2_down();
-  s3_down();
-  s4_down();
+  FL_down();
+  FR_down();
+  BL_down();
+  BR_down();
   delay(STOP_GAP * 3);
 }
 
 void dance2()
 {
-  s1_1();
-  s3_1();
+  FL_1();
+  BL_1();
   delay(STOP_GAP * 5);
-  s1_down();
-  s3_down();
+  FL_down();
+  BL_down();
   delay(STOP_GAP * 5);
-  s1_5();
-  s3_5();
+  FL_5();
+  BL_5();
   delay(STOP_GAP * 5);
-  s1_down();
-  s3_down();
+  FL_down();
+  BL_down();
   delay(STOP_GAP * 5);
 
-  s2_1();
-  s4_1();
+  FR_1();
+  BR_1();
   delay(STOP_GAP * 5);
-  s2_down();
-  s4_down();
+  FR_down();
+  BR_down();
   delay(STOP_GAP * 5);
-  s2_5();
-  s4_5();
+  FR_5();
+  BR_5();
   delay(STOP_GAP * 5);
-  s2_down();
-  s4_down();
+  FR_down();
+  BR_down();
   delay(STOP_GAP * 5);
 
 }

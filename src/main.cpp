@@ -19,9 +19,6 @@ void setup() {
 
     Serial.begin(115200);
 
-    // initServo();
-    // stand_up();
-
     // MQTT SETUP
     // setup_wifi();
     // client.setServer(mqtt_server, mqtt_port);
@@ -32,6 +29,7 @@ void setup() {
 
     // Directly use PWM to control servo
     pwm_servo_init();
+    stand_up();
 
     // SCREEN
     // u8g2.setBusClock(800000);
@@ -57,6 +55,16 @@ void loop() {
     }
     delay(50);
     // dance2();
+    // BL_1();
+    // delay(1000);
+    // BL_up();
+    // delay(1000);
+    // BL_down();
+    // delay(1000);
+    // BL_back();
+    // delay(1000);
+    // BL_5();
+    // delay(1000);
 
 
     // if (millis() - lastMillis <= 3000) {
