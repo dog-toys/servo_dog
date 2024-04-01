@@ -29,9 +29,8 @@ void setup() {
 
     // Directly use PWM to control servo
     pwm_servo_init();
-    stand_up();
-
     // SCREEN
+
     // u8g2.setBusClock(800000);
     // u8g2.begin();
     // u8g2.enableUTF8Print();

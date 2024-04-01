@@ -1,6 +1,8 @@
 #ifndef ACTION_PWM_H
 #define ACTION_PWM_H
 
+#include <unordered_map>
+
 #include <Arduino.h>
 #include <Adafruit_PWMServoDriver.h>
 
@@ -35,6 +37,13 @@ uint16_t SERVOMIN = 102;
 uint16_t SERVOMAX = 510;
 Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
 
+std::unordered_map<int, int> channel2angle = {
+    {0, 90},
+    {1, 90},
+    {2, 90},
+    {3, 90},
+};
+
 int angle2pwm(int angle) {
     int res = map(angle, 0, 180, SERVOMIN, SERVOMAX);
     return res;
@@ -43,10 +52,27 @@ int angle2pwm(int angle) {
 void pwm_servo_init() {
     pwm.begin();
     pwm.setPWMFreq(50);  // 设置PWM频率为50Hz
+    for (int channel = 0; channel < 4; channel++) {
+        pwm.setPWM(channel, 0, angle2pwm(90));
+    }
 }
 
-void pwm_servo_set(int channel, int angle) {
-    pwm.setPWM(channel, 0, angle2pwm(angle));
+void pwm_servo_set(int channel, int angle, bool is_init=false) {
+    int old_angle = channel2angle[channel];
+    int adder = 0;
+    if (old_angle == angle) {
+        return;
+    } else if (old_angle < angle) {
+        adder = 1;
+    } else {
+        adder = -1;
+    }
+    for (int i = old_angle; i != angle; i += adder) {
+        pwm.setPWM(channel, 0, angle2pwm(i));
+        delay(2);
+    }
+    channel2angle[channel] = angle;
+    // pwm.setPWM(channel, 0, angle2pwm(angle));
 }
 
 #endif
