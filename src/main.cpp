@@ -10,7 +10,7 @@
 #include "pwm_servo.h"
 
 
-U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
+// U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, SCL, SDA, U8X8_PIN_NONE);
 
 // unsigned long lastMillis = 0;
 
@@ -53,6 +53,10 @@ void loop() {
         Serial.println("BLE Advertising start again");
     }
     delay(50);
+    pwm_servo_set(15, 135);
+    delay(1000);
+    pwm_servo_set(15, 85);
+    delay(1000);
     // dance2();
     // BL_1();
     // delay(1000);

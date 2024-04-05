@@ -42,6 +42,7 @@ std::unordered_map<int, int> channel2angle = {
     {1, 90},
     {2, 90},
     {3, 90},
+    {15, 90},
 };
 
 int angle2pwm(int angle) {
@@ -52,12 +53,12 @@ int angle2pwm(int angle) {
 void pwm_servo_init() {
     pwm.begin();
     pwm.setPWMFreq(50);  // 设置PWM频率为50Hz
-    for (int channel = 0; channel < 4; channel++) {
+    for (int channel = 0; channel < 16; channel++) {
         pwm.setPWM(channel, 0, angle2pwm(90));
     }
 }
 
-void pwm_servo_set(int channel, int angle, bool is_init=false) {
+void pwm_servo_set(int channel, int angle) {
     int old_angle = channel2angle[channel];
     int adder = 0;
     if (old_angle == angle) {
