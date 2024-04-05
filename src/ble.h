@@ -1,6 +1,9 @@
 #ifndef BLE_H
 #define BLE_H
 
+#include <string>
+#include <stdexcept> // 包含 std::invalid_argument 和 std::out_of_range
+
 #include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -13,6 +16,18 @@
 
 bool isAdvertising = true;
 int clientCount = 0;
+
+bool stringToInt(const std::string& str, int& outNum) {
+    try {
+        outNum = std::stoi(str);
+        return true; // 成功转换
+    } catch (const std::invalid_argument& e) {
+        // 不是有效的整数字符串
+    } catch (const std::out_of_range& e) {
+        // 数字超出 int 范围
+    }
+    return false; // 转换失败
+}
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
@@ -61,6 +76,7 @@ class MySecurity: public BLESecurityCallbacks {
 
 class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
+        Serial.println("on write called");
         std::string value = pCharacteristic->getValue();
         if (value.length() > 0) {
             Serial.println("Received value: " + String(value.c_str()));
@@ -77,6 +93,9 @@ class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
             } else if (value == "sit_down") {
                 sit_down();
             }
+            int angle = 85;
+            stringToInt(value, angle);
+            pwm_servo_set(15, angle);
         }
     }
 };
