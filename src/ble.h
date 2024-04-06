@@ -92,17 +92,18 @@ class MyCharacteristicCallbacks: public BLECharacteristicCallbacks {
                 stand_up();
             } else if (value == "sit_down") {
                 sit_down();
+            } else {
+                int angle = 85;
+                stringToInt(value, angle);
+                pwm_servo_set(15, angle);
             }
-            int angle = 85;
-            stringToInt(value, angle);
-            pwm_servo_set(15, angle);
         }
     }
 };
 
 void BLEInit()
 {
-    BLEDevice::init("Fish Fish");
+    BLEDevice::init("Servo Dog");
     auto local_address = BLEDevice::getAddress();
     Serial.println(local_address.toString().c_str());
 
