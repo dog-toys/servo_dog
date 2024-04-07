@@ -52,6 +52,8 @@ void loop() {
         isAdvertising = true;
         Serial.println("BLE Advertising start again");
     }
+    // Serial.println("111 loop");
+    // delay(1000);
     // delay(50);
     // pwm_servo_set(15, 135);
     // delay(1000);
