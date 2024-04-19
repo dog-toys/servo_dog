@@ -52,6 +52,24 @@ void loop() {
         isAdvertising = true;
         Serial.println("BLE Advertising start again");
     }
+    // for (int channel = 0; channel < 16; channel++) {
+    //     // pwm_servo_set(channel, 0);
+    //     pwm.setPWM(channel, 0, angle2pwm(0));
+    //     delay(10);
+    // }
+    // delay(1000);
+    // for (int channel = 0; channel < 16; channel++) {
+    //     // pwm_servo_set(channel, 90);
+    //     pwm.setPWM(channel, 0, angle2pwm(90));
+    //     delay(10);
+    // }
+    // delay(1000);
+    // for (int channel = 0; channel < 16; channel++) {
+    //     // pwm_servo_set(channel, 180);
+    //     pwm.setPWM(channel, 0, angle2pwm(180));
+    //     delay(10);
+    // }
+    // delay(1000);
     // Serial.println("111 loop");
     // delay(1000);
     // delay(50);
