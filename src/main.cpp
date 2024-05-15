@@ -14,6 +14,12 @@
 
 // unsigned long lastMillis = 0;
 
+#include <ESP32Servo.h>
+#define S_LR 16
+Servo s1, s2, s3, s4;
+int minUs = 500;
+int maxUs = 2500;
+
 void setup() {
     // lastMillis = millis();
 
@@ -28,12 +34,19 @@ void setup() {
     BLEInit();
 
     // Directly use PWM to control servo
-    pwm_servo_init();
+    // pwm_servo_init();
     // SCREEN
 
     // u8g2.setBusClock(800000);
     // u8g2.begin();
     // u8g2.enableUTF8Print();
+
+    s1.setPeriodHertz(50); // Standard 50hz servo
+    s2.setPeriodHertz(50); // Standard 50hz servo
+    s3.setPeriodHertz(50); // Standard 50hz servo
+    s1.attach(S_LR, minUs, maxUs); // attaches the servo on pin 16 to the servo object
+    s2.attach(17, minUs, maxUs); // attaches the servo on pin 16 to the servo object
+    s3.attach(18, minUs, maxUs); // attaches the servo on pin 16 to the servo object
 }
 
 
@@ -52,6 +65,23 @@ void loop() {
         isAdvertising = true;
         Serial.println("BLE Advertising start again");
     }
+
+    int pos = 0;
+    for (pos = 0; pos <= 180; pos += 1) { // sweep from 0 degrees to 180 degrees
+        // in steps of 1 degree
+        s1.write(pos);
+        s2.write(pos);
+        s3.write(pos);
+        delay(10);             // waits 20ms for the servo to reach the position
+    }
+    for (pos = 180; pos >= 0; pos -= 1) { // sweep from 180 degrees to 0 degrees
+        s1.write(pos);
+        s2.write(pos);
+        s3.write(pos);
+        delay(10);
+    }
+    delay(3000);
+
     // for (int channel = 0; channel < 16; channel++) {
     //     // pwm_servo_set(channel, 0);
     //     pwm.setPWM(channel, 0, angle2pwm(0));
